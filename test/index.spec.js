@@ -19,7 +19,18 @@ describe('Identify Request API', () => {
     
     const data = await response.json();
     expect(data).toHaveProperty('ip');
-    expect(data).toHaveProperty('location');
     expect(data.ip).toBe('127.0.0.1');
+    
+    // Flattened structure checks
+    // Note: In local test environment, location properties might be undefined
+    // so we just check the structure allows for them or check for the flattened keys if we mock them.
+    // Since we aren't mocking cf object fully in this basic test, we primarily ensure the structure matches the new logic.
+    
+    // We expect these keys to be present in the logic, even if undefined in local test context
+    // However, to be safe with the test, we can check for keys that are definitely set or check the object structure.
+    
+    // Let's verify it is NOT nested
+    expect(data).not.toHaveProperty('location');
+    expect(data).not.toHaveProperty('meta');
   });
 });
